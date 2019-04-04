@@ -1,7 +1,7 @@
 * Encoding: windows-1252.
 
 * begin met http://overpass-turbo.eu/s/HFU
-* dan exporteren naar level0
+* dan exporteren als raw OSM data
 * dan inlezen etc.
 
 PRESERVE.
