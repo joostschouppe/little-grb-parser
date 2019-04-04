@@ -1,6 +1,7 @@
 * Encoding: windows-1252.
 
-* begin met http://overpass-turbo.eu/s/HFU
+* begin met voor West-Vlaanderen http://overpass-turbo.eu/s/HFU
+* voor Oost-Vlaanderen: http://overpass-turbo.eu/s/HGG (opgelet, 200mb)
 * dan exporteren als raw OSM data
 * dan inlezen etc.
 
