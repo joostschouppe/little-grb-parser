@@ -119,10 +119,18 @@ EXECUTE.
 * verwijder rij met oidn en uidn.
 compute te_verwijderen=0.
 if aangepast=1 & (oidn~='' | CHAR.INDEX(V1,'source:geometry:uidn')>0) te_verwijderen=1.
+if CHAR.INDEX(V1,'<tag k="source" v="GRB"/>')>0 te_verwijderen=1.
 EXECUTE.
 
 * zorg dat JOSM weet welke aan te passen.
-if aangepast=1 & lag(object)<object v1=replace(v1,'timestamp','action="modify" timestamp ').
+
+DATASET ACTIVATE grb.
+AGGREGATE
+  /OUTFILE=* MODE=ADDVARIABLES
+  /BREAK=object
+  /te_verwijderen_max=MAX(te_verwijderen).
+
+if te_verwijderen_max=1 & lag(object)<object v1=replace(v1,'timestamp','action="modify" timestamp ').
 EXECUTE.
 
 
@@ -138,7 +146,7 @@ match files
 EXECUTE.
 
 
-* wel nog de extentie aanpassen naar .osm.
+* .osm.
 SAVE TRANSLATE OUTFILE='C:\Users\plu3532\Documents\niet-werkgerelateerd\OSM\grb import\output_export.osm'
   /TYPE=TAB
   /ENCODING='UTF8'
