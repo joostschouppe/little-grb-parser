@@ -1,4 +1,7 @@
-* Encoding: UTF-8.
+* Encoding: windows-1252.
+* Encoding: .
+
+* ERROR: teller van object gaat niet omhoog bij de eerste relatie.
 
 * begin met voor West-Vlaanderen http://overpass-turbo.eu/s/HFU
 * voor Oost-Vlaanderen: http://overpass-turbo.eu/s/HGG (opgelet, 200mb)
@@ -31,8 +34,8 @@ EXECUTE.
 
 * maak een unieke sleutel per way/relatie.
 if $casenum=1 object=0.
-if $casenum>1 & CHAR.INDEX(V1,'<way id="')=0 object=lag(object).
-if CHAR.INDEX(V1,'<way id="')>0 object=lag(object)+1.
+if $casenum>1 & (CHAR.INDEX(V1,'<way id="')=0 | CHAR.INDEX(V1,'<relation id="')=0)  object=lag(object).
+if (CHAR.INDEX(V1,'<way id="')>0 | CHAR.INDEX(V1,'<relation id="')>0) object=lag(object)+1.
 
 * maak een teller binnen het object.
 if $casenum=1 rij_object=2.
@@ -89,6 +92,8 @@ EXECUTE.
 compute specialleke=max(CHAR.INDEX(entity,';'),CHAR.INDEX(oidn,';')).
 EXECUTE.
 
+frequencies specialleke.
+
 * sop is de kolen niet waard.
 FILTER OFF.
 USE ALL.
@@ -133,6 +138,16 @@ AGGREGATE
 if te_verwijderen_max=1 & lag(object)<object v1=replace(v1,'timestamp','action="modify" timestamp ').
 EXECUTE.
 
+DATASET DECLARE test.
+AGGREGATE
+  /OUTFILE='test'
+  /BREAK=object
+  /aangepast_max=MAX(aangepast) 
+  /te_verwijderen_max_max=MAX(te_verwijderen_max).
+dataset activate test.
+FREQUENCIES aangepast_max  te_verwijderen_max_max.
+dataset activate grb.
+dataset close test.
 
 FILTER OFF.
 USE ALL.
@@ -146,10 +161,13 @@ match files
 EXECUTE.
 
 
-* .osm.
+* sla op als .osm file.
 SAVE TRANSLATE OUTFILE='C:\Users\plu3532\Documents\niet-werkgerelateerd\OSM\grb import\output_export.osm'
   /TYPE=TAB
   /ENCODING='UTF8'
   /MAP
   /REPLACE
   /CELLS=VALUES.
+
+* open in JOSM, valideer, upload.
+
