@@ -1,12 +1,10 @@
-* Encoding: windows-1252.
-* Encoding: .
-
-* ERROR: teller van object gaat niet omhoog bij de eerste relatie.
-
-* begin met voor West-Vlaanderen http://overpass-turbo.eu/s/HFU
+* voorbeeld query West-Vlaanderen http://overpass-turbo.eu/s/HFU
 * voor Oost-Vlaanderen: http://overpass-turbo.eu/s/HGG (opgelet, 200mb)
 * dan exporteren als raw OSM data
 * dan inlezen etc.
+
+* zorg dat je unicode verwacht.
+SET OLang=English Unicode=Yes Locale=nl_BE.
 
 PRESERVE.
  SET DECIMAL COMMA.
